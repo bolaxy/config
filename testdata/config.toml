@@ -1,0 +1,28 @@
+[eth]
+cache = 128
+
+# 公链的设置
+[bolaxy]
+# 公链的网络ID要相同，才能加入到同一个网络中. 用于区分不同的公链
+network-id = "37234"
+# 如果consensus_account没提供，默认为keystore的第一个账户
+consensus-account = "0X03573555DCF1B4518816DF6F1EDFF2C16B4D29F64CF6D9BDA78ECB6F50826CCA0B"
+listen = "127.0.0.1:1337"
+
+self = "node3"
+verbose = true
+datadir = "/Users/zhangping/work/bb/bolaxy/datadir"
+api-listen = "127.0.0.1:8088"
+heartbeat = "200ms"
+max-pool = 2
+tcp-timeout = "1s"
+sync-limit = 1000
+cache-size = 50000
+bootstrap = true
+
+[[bolaxy.peerSet]]
+address = "192.168.30.213"
+port = 10799
+alias = "node3"
+#private key 0xbd53d643842b380e9cea61cc3f6b282a8b2fdc2b8956acc6a14a842125a5eda4
+pubkey = "0x03573555dcf1b4518816df6f1edff2c16b4d29f64cf6d9bda78ecb6f50826cca0b"
