@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/bolaxy/common v1.0.0
-	github.com/bolaxy/crypto v1.0.0
+	github.com/bolaxy/crypto v1.0.2
 	github.com/bolaxy/rlp v1.0.0
 	github.com/davecgh/go-spew v1.1.1
 	github.com/mattn/go-colorable v0.1.4 // indirect
