@@ -3,7 +3,8 @@ package conf
 import (
 	"errors"
 	"fmt"
-	"github.com/boxproject/bolaxy/common"
+
+	"github.com/bolaxy/common"
 	"github.com/spf13/viper"
 )
 

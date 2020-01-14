@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/viper"
 
-	"github.com/boxproject/bolaxy/common/hexutil"
-	"github.com/boxproject/bolaxy/crypto"
-	"github.com/boxproject/bolaxy/rlp"
+	"github.com/bolaxy/common/hexutil"
+	"github.com/bolaxy/crypto"
+	"github.com/bolaxy/rlp"
 )
 
 type Genesis struct {

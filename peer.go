@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/boxproject/bolaxy/common"
-	"github.com/boxproject/bolaxy/crypto"
+	"github.com/bolaxy/common"
+	"github.com/bolaxy/crypto"
 )
 
-//Peer is a struct that holds Peer data
+// Peer is a struct that holds Peer data
 type Peer struct {
 	Alias     string `mapstructure:"alias"`
 	PubKeyHex string `mapstructure:"pubkey"`
@@ -20,7 +20,7 @@ type Peer struct {
 	id uint32
 }
 
-//NewPeer is a factory method for creating a new Peer instance
+// NewPeer is a factory method for creating a new Peer instance
 func NewPeer(pubKeyHex, netAddr, alias, httpPort, tcpPort string) *Peer {
 	peer := &Peer{
 		PubKeyHex: strings.ToUpper(pubKeyHex),
@@ -32,8 +32,8 @@ func NewPeer(pubKeyHex, netAddr, alias, httpPort, tcpPort string) *Peer {
 	return peer
 }
 
-//ID returns an ID for the peer, calculating a hash is one is not available
-//XXX Not very nice
+// ID returns an ID for the peer, calculating a hash is one is not available
+// XXX Not very nice
 func (p *Peer) ID() uint32 {
 	if p.id == 0 {
 		pubKeyBytes := p.PubKeyBytes()
@@ -42,20 +42,20 @@ func (p *Peer) ID() uint32 {
 	return p.id
 }
 
-//PubKeyString returns the upper-case version of PubKeyHex. It is used for
-//indexing in maps with string keys.
-//XXX do something nicer
+// PubKeyString returns the upper-case version of PubKeyHex. It is used for
+// indexing in maps with string keys.
+// XXX do something nicer
 func (p *Peer) PubKeyString() string {
 	return p.PubKeyHex
 }
 
-//PubKeyBytes converts hex string representation of the public key and returns a byte array
+// PubKeyBytes converts hex string representation of the public key and returns a byte array
 func (p *Peer) PubKeyBytes() []byte {
 	return common.FromHex(p.PubKeyHex)
 }
 
-//Marshal marshals the json representation of the peer
-//json encoding excludes the ID field
+// Marshal marshals the json representation of the peer
+// json encoding excludes the ID field
 func (p *Peer) Marshal() ([]byte, error) {
 	var b bytes.Buffer
 
@@ -68,11 +68,11 @@ func (p *Peer) Marshal() ([]byte, error) {
 	return b.Bytes(), nil
 }
 
-//Unmarshal generates a JSON representation of the peer
+// Unmarshal generates a JSON representation of the peer
 func (p *Peer) Unmarshal(data []byte) error {
 	b := bytes.NewBuffer(data)
 
-	dec := json.NewDecoder(b) //will read from b
+	dec := json.NewDecoder(b) // will read from b
 
 	if err := dec.Decode(p); err != nil {
 		return err

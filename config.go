@@ -112,7 +112,7 @@ func (list *PeerList) Marshal() ([]byte, error) {
 func (list *PeerList) UnMarshal(data []byte) error {
 	b := bytes.NewBuffer(data)
 
-	dec := json.NewDecoder(b) //will read from b
+	dec := json.NewDecoder(b) // will read from b
 
 	if err := dec.Decode(list); err != nil {
 		return err

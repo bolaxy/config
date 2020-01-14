@@ -6,17 +6,17 @@ import (
 	"math"
 	"strings"
 
-	"github.com/boxproject/bolaxy/common/hexutil"
-	"github.com/boxproject/bolaxy/crypto"
+	"github.com/bolaxy/common/hexutil"
+	"github.com/bolaxy/crypto"
 )
 
-//PeerSet is a set of Peers forming a consensus network
+// PeerSet is a set of Peers forming a consensus network
 type PeerSet struct {
 	Peers    []*Peer          `json:"peers"`
 	ByPubKey map[string]*Peer `json:"-"`
 	ByID     map[uint32]*Peer `json:"-"`
 
-	//cached values
+	// cached values
 	hash          []byte
 	hex           string
 	superMajority *int
@@ -25,7 +25,7 @@ type PeerSet struct {
 
 /* Constructors */
 
-//NewPeerSet creates a new PeerSet from a list of Peers
+// NewPeerSet creates a new PeerSet from a list of Peers
 func NewPeerSet(peers PeerList) *PeerSet {
 	peerSet := &PeerSet{
 		ByPubKey: make(map[string]*Peer),
@@ -43,27 +43,27 @@ func NewPeerSet(peers PeerList) *PeerSet {
 	return peerSet
 }
 
-//NewPeerSetFromPeerSliceBytes creates a new PeerSet from a peerSlice in Bytes format
+// NewPeerSetFromPeerSliceBytes creates a new PeerSet from a peerSlice in Bytes format
 func NewPeerSetFromPeerSliceBytes(peerSliceBytes []byte) (*PeerSet, error) {
-	//Decode Peer slice
+	// Decode Peer slice
 	var peers []*Peer
 
 	b := bytes.NewBuffer(peerSliceBytes)
-	dec := json.NewDecoder(b) //will read from b
+	dec := json.NewDecoder(b) // will read from b
 
 	err := dec.Decode(&peers)
 	if err != nil {
 		return nil, err
 	}
-	//create new PeerSet
+	// create new PeerSet
 	return NewPeerSet(peers), nil
 }
 
-//WithNewPeer returns a new PeerSet with a list of peers including the new one.
+// WithNewPeer returns a new PeerSet with a list of peers including the new one.
 func (peerSet *PeerSet) WithNewPeer(peer *Peer) *PeerSet {
 	peers := peerSet.Peers
 
-	//don't add it if it already exists
+	// don't add it if it already exists
 	if _, ok := peerSet.ByID[peer.ID()]; !ok {
 		peers = append(peers, peer)
 	}
@@ -72,8 +72,8 @@ func (peerSet *PeerSet) WithNewPeer(peer *Peer) *PeerSet {
 	return newPeerSet
 }
 
-//WithRemovedPeer returns a new PeerSet with a list of peers excluding the
-//provided one
+// WithRemovedPeer returns a new PeerSet with a list of peers excluding the
+// provided one
 func (peerSet *PeerSet) WithRemovedPeer(peer *Peer) *PeerSet {
 	var peers []*Peer
 	for _, p := range peerSet.Peers {
@@ -87,7 +87,7 @@ func (peerSet *PeerSet) WithRemovedPeer(peer *Peer) *PeerSet {
 
 /* ToSlice Methods */
 
-//PubKeys returns the PeerSet's slice of public keys
+// PubKeys returns the PeerSet's slice of public keys
 func (peerSet *PeerSet) PubKeys() []string {
 	res := make([]string, 0, len(peerSet.Peers))
 
@@ -98,7 +98,7 @@ func (peerSet *PeerSet) PubKeys() []string {
 	return res
 }
 
-//IDs returns the PeerSet's slice of IDs
+// IDs returns the PeerSet's slice of IDs
 func (peerSet *PeerSet) IDs() []uint32 {
 	res := make([]uint32, 0, len(peerSet.Peers))
 
@@ -111,13 +111,13 @@ func (peerSet *PeerSet) IDs() []uint32 {
 
 /* Utilities */
 
-//Len returns the number of Peers in the PeerSet
+// Len returns the number of Peers in the PeerSet
 func (peerSet *PeerSet) Len() int {
 	return len(peerSet.ByPubKey)
 }
 
-//Hash uniquely identifies a PeerSet. It is computed by sorting the peers set
-//by ID, and hashing (SHA256) their public keys together, one by one.
+// Hash uniquely identifies a PeerSet. It is computed by sorting the peers set
+// by ID, and hashing (SHA256) their public keys together, one by one.
 func (peerSet *PeerSet) Hash() ([]byte, error) {
 	if len(peerSet.hash) == 0 {
 		var hash []byte
@@ -130,7 +130,7 @@ func (peerSet *PeerSet) Hash() ([]byte, error) {
 	return peerSet.hash, nil
 }
 
-//Hex is the hexadecimal representation of Hash
+// Hex is the hexadecimal representation of Hash
 func (peerSet *PeerSet) Hex() string {
 	if len(peerSet.hex) == 0 {
 		hash, _ := peerSet.Hash()
@@ -139,7 +139,7 @@ func (peerSet *PeerSet) Hex() string {
 	return peerSet.hex
 }
 
-//Marshal marshals the peerset
+// Marshal marshals the peerset
 func (peerSet *PeerSet) Marshal() ([]byte, error) {
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
@@ -149,8 +149,8 @@ func (peerSet *PeerSet) Marshal() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-//SuperMajority return the number of peers that forms a strong majortiy (+2/3)
-//in the PeerSet
+// SuperMajority return the number of peers that forms a strong majortiy (+2/3)
+// in the PeerSet
 func (peerSet *PeerSet) SuperMajority() int {
 	if peerSet.superMajority == nil {
 		val := 2*peerSet.Len()/3 + 1
@@ -159,7 +159,7 @@ func (peerSet *PeerSet) SuperMajority() int {
 	return *peerSet.superMajority
 }
 
-//TrustCount calculates the Trust Count for a peerset
+// TrustCount calculates the Trust Count for a peerset
 func (peerSet *PeerSet) TrustCount() int {
 	if peerSet.trustCount == nil {
 		val := 0
