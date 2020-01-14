@@ -1,4 +1,4 @@
-module config
+module github.com/bolaxy/config
 
 go 1.13
 
