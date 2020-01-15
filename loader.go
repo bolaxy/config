@@ -2,7 +2,7 @@ package conf
 
 import (
 	"errors"
-	"fmt"
+
 
 	"github.com/bolaxy/common"
 	"github.com/spf13/viper"
@@ -32,7 +32,6 @@ func TryLoadConfig(filePath string, cfgName ...string) (*Config, error) {
 	if err := genericLoad(filePath, cname, Global); err != nil {
 		return nil, err
 	}
-	fmt.Println("=====>>>>>>>", Global.NetCnf.Heartbeat)
 	Logger = Global.GetLogger()
 	return Global, nil
 }
